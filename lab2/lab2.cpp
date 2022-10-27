@@ -53,8 +53,9 @@ int compare(const void* x1, const void* x2)   // функция сравнени
 }
 
 int main(void) {
-	const int size = 55000;
+	const int size = 100000;
 	int i = 0;
+	int half_size = size / 2;
 	clock_t start, end; // объявляем переменные для определения времени выполнения
 
 
@@ -92,25 +93,42 @@ int main(void) {
 	while (i < size)
 	{
 		if (M_decrease_shell && M_decrease_qs && M_decrease_qsort) {
-			M_decrease_shell[i] = M_decrease_qs[i] = M_decrease_qsort[i] = size - i - 1; // заполняем массив убывающими числами
+			M_decrease_shell[i] = M_decrease_qs[i] = M_decrease_qsort[i] = size - i; // заполняем массив убывающими числами
 			i++;
 		}
 	}
 	i = 0;
-	while (i < (size / 2))
-	{
-		if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
-			M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = i; // заполняем массив возр числами
-			i++;
+
+
+	for (int i = 0; i <= half_size; i++) {
+		for (i = half_size; i != 0; i--) {
+			if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
+				M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = i - 1;
+			}
+		}
+		for (i = half_size; i != size; i++) {
+			if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
+				M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = i + 1;
+			}
 		}
 	}
-	while (i < size)
-	{
-		if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
-			M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = size - i; // заполняем массив убывающими числами
-			i++;
-		}
-	}
+
+
+
+	//while (i < (size / 2))
+	//{
+	//	if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
+	//		M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = i; // заполняем массив возр числами
+	//		i++;
+	//	}
+	//}
+	//while (i < size)
+	//{
+	//	if (M_increase_decrease_shell && M_increase_decrease_qs && M_increase_decrease_qsort) {
+	//		M_increase_decrease_shell[i] = M_increase_decrease_qs[i] = M_increase_decrease_qsort[i] = size - i; // заполняем массив убывающими числами
+	//		i++;
+	//	}
+	//}
 	//----------------------
 	//рандомныый массив
 	printf("Rand\n");
@@ -180,7 +198,11 @@ int main(void) {
 	printf("Shell - %f\n", (double)(end - start) / CLOCKS_PER_SEC);
 	free(M_increase_decrease_shell);
 
-	
+	start = clock();
+	qs(M_increase_decrease_qs, 0, size - 1);
+	end = clock();
+	printf("qs - %f\n", (double)(end - start) / CLOCKS_PER_SEC);
+
 	start = clock();
 	qsort(M_increase_decrease_qsort, size, sizeof(int), compare);
 	end = clock();
